@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources\Product;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\Resource;
 
-class ProductResource extends JsonResource
+class ProductResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -25,6 +25,7 @@ class ProductResource extends JsonResource
             'href' => [
                 'reviews' => route('reviews.index', $this->id)
             ]
+
         ];
     }
 }
