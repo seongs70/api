@@ -3,8 +3,14 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+//ModelNotFoundException 클래스
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+//Response::HTTP_NOT_FOUND 클래스
 
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpFoundation\Response;
+//라우트 오류 예외처리 클래스
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Handler extends ExceptionHandler
 {
     /**
@@ -46,6 +52,21 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        //예외처리 제이슨 http://localhost:8000/api/product/505 에서 제이슨을 찾을 수 없으면
+        if($request->expectsJson()){
+            if($exception instanceof ModelNotFoundException){
+                return response()->json([
+                    // 어떤에러인지 표시
+                    'errors' => 'Product Model not found'
+                ], Response::HTTP_NOT_FOUND);
+            }
+            if($exception instanceof NotFoundHttpException){
+                return response()->json([
+                    // 어떤에러인지 표시
+                    'errors' => 'Incorect Route'
+                ], Response::HTTP_NOT_FOUND);
+            }
+        }
         return parent::render($request, $exception);
     }
 }
