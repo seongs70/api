@@ -14,7 +14,10 @@ class DatabaseSeeder extends Seeder
         if(config('database.default') !== 'sqlite'){
             DB::statement('SET FOREIGN_KEY_CHECKS=0');
         }
+
         // $this->call(UsersTableSeeder::class);
+        App\User::truncate();
+        $this->call(UsersTableSeeder::class);
         App\Model\Product::truncate();
         $this->call(productsTableSeeder::class);
 
