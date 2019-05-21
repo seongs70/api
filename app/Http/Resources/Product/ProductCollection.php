@@ -15,10 +15,12 @@ class ProductCollection extends Resource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
-            'totalPrice' => round((1-($this->discount/100)) * $this->price,2),
-            'rating' => $this->reviews->count() > 0 ? round($this->reviews->sum('star')/$this->reviews->count(), 2) : 'No rating yet',
+            'totalPrice' => round((1-($this->discount/100)) * $this->price),
+            'rating' => $this->reviews->count() > 0 ? round($this->reviews->sum('star')/$this->reviews->count(),1) : '평점 없음',
             'discount' => $this->discount,
+            'user_id' => $this->user_id,
             'href' => [
                 'link' => route('products.show',$this->id)
             ]
